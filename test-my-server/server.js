@@ -40,7 +40,7 @@ app.get('/api/repos/:repositoryId/commits/:commitHash', (req, res) => {
         }
         else {
             const arrayOfCommits = parseCommitList(out);
-            res.json({ arrayOfCommits });
+            res.send( arrayOfCommits );
         }
     })
 
