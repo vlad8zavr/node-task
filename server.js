@@ -89,9 +89,20 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
     const filepath = getPathFromUrl(req, repositoryId, commitHash, path);
     const moddedFilePath = filepath.replace(/\//g, '\\');
 
-    let pathToWalk = (filepath !== '') ? `${pathToRep}${repositoryId}\\${moddedFilePath}` : `${pathToRep}${repositoryId}`;
-    let contentsOfSmallRep = fs.readdirSync(`${pathToWalk}`);
-    res.send( contentsOfSmallRep );
+    if (commitHash) {
+        //exec(`git checkout`)
+            // fs.readdirSync()
+    }
+    else {
+        let pathToWalk = (filepath !== '') ? `${pathToRep}${repositoryId}\\${moddedFilePath}` : `${pathToRep}${repositoryId}`;
+        let contentsOfSmallRep = fs.readdirSync(`${pathToWalk}`);
+        res.send( contentsOfSmallRep );
+    }
+
+    // let pathToWalk = (filepath !== '') ? `${pathToRep}${repositoryId}\\${moddedFilePath}` : `${pathToRep}${repositoryId}`;
+    // let contentsOfSmallRep = fs.readdirSync(`${pathToWalk}`);
+    // res.send( contentsOfSmallRep );
+    
 })
 
 // 5-th) shows blob (no switch to branch yet)
