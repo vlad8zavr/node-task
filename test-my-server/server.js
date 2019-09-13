@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const { exec } = require('child_process');
-const { parseCommitList } = require('./parseResponse');
+const { parseCommitList, getPathFromUrl } = require('./parseResponse');
 
 // get argument from command line
 let pathToRep = process.argv[2];
@@ -77,6 +77,27 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
             })
         }
     })
+})
+
+// 4-th) repository contents
+app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
+
+    const repositoryId = req.params.repositoryId;
+    const commitHash = req.params.commitHash;
+    const path = req.params.path;
+
+    const filepath = getPathFromUrl(req, repositoryId, commitHash, path);
+    const moddedFilePath = filepath.replace(/\//g, '\\');
+
+    if (filepath !== '') {
+        console.log(`pathToRep : ${pathToRep}`);
+        console.log(`filepath : ${moddedFilePath}`);
+        let contentsOfSmallRep = fs.readdirSync(`${pathToRep}${moddedFilePath}`);
+        console.log(contentsOfSmallRep);
+        res.send( contentsOfSmallRep );
+    }
+
+
 })
 
 app.listen(3000);
