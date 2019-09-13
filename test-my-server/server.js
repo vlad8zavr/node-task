@@ -1,10 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const { exec } = require('child_process');
-
-let progs = {
-    list: "ls"
-}
+const { parseCommitList } = require('./parseResponse');
 
 // get argument from command line
 let pathToRep = process.argv[2];
@@ -24,16 +21,20 @@ app.get('/', (req, res) => res.json({
 }));
 
 // 1-st) shows all repos
-app.get('/api/repos', (req, res) => res.json({ contentsOfRep }));
+app.get('/api/repos', (req, res) => res.send( contentsOfRep ));
 
 // 2-nd) shows all commits
 app.get('/api/repos/:repositoryId/commits/:commitHash', (req, res) => {
 
-    console.log(req.params);
     // req.params - объект с параметрами из адресной строки
+    const repositoryId = req.params.repositoryId;
+    const commitHash = req.params.commitHash;
 
-    // НО МНЕ НУЖНА КОМАНДА, КОТОРАЯ ВОЗВРАЩАЕТ СПИСОК КОМИТОВ В КОНКРЕТНОЙ ВЕТКЕ commitHash (branchName)
-    exec('git log', {cwd: `${pathToRep}`}, (err, out) => {  
+    // хэш ветки
+    // git rev-parse master : 07eba6f6668952aa749015e96f1f9a086c6d6f0b
+    // git rev-parse test   : 7a9229814149fab2a8af1ab84a94e9c12340913e
+    
+    exec(`git log --pretty=format:"%H <><><> %ad ||| %s" ${commitHash}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => { 
         if (err) {
             console.error(err);
             res.json({ err });
@@ -45,18 +46,38 @@ app.get('/api/repos/:repositoryId/commits/:commitHash', (req, res) => {
     })
 
 })
-app.listen(3000);
 
-function parseCommitList(out) {
-    arrayOfCommits = [];
-    out.split('commit').forEach(item => {
-        if (item.trim() !== '') {
-            let hash = item.split('Author')[0].trim();
-            let date = item.split('Date:')[1].split('\n\n')[0].trim();
-            let commit = item.split('Date:')[1].split('\n\n')[1].trim();
-            arrayOfCommits.push({ hash: hash, commit: commit, date: date });
+// 3-rd) shows diff
+app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
+
+    const repositoryId = req.params.repositoryId;
+    const commitHash = req.params.commitHash;
+    
+    // хэш последнего коммита
+    // git log --pretty=format:"%H" -1
+    // git log --pretty=format:"%H" -2
+
+    // get hash of the last commit
+    exec(`git log --pretty=format:"%H" -1`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
+        if (err) {
+            console.error(err);
+            res.json({ err });
         }
-    });
-    return arrayOfCommits;
-}
+        else {
+
+            exec(`git diff ${commitHash} ${out}`, {cwd: `${pathToRep}/${repositoryId}`}, (err1, out1) => {
+                if (err1) {
+                    console.error(err1);
+                    res.json({ err1 });
+                }
+                else {
+                    console.log(out1);
+                    res.send( out1 );
+                }
+            })
+        }
+    })
+})
+
+app.listen(3000);
 
