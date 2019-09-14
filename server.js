@@ -36,10 +36,9 @@ app.get('/api/repos/:repositoryId/commits/:commitHash', (req, res) => {
     // git rev-parse master : 07eba6f6668952aa749015e96f1f9a086c6d6f0b
     // git rev-parse test   : 7a9229814149fab2a8af1ab84a94e9c12340913e
     
-    // git rev-list - когда коммитов много
-    // git log without less
+    // git --no-pager log  (without less) 
 
-    exec(`git log --pretty=format:"%H <><><> %ad ||| %s" ${commitHash}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => { 
+    exec(`git --no-pager log --pretty=format:"%H <><><> %ad ||| %s" ${commitHash}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => { 
         if (err) {
             console.error(err);
             res.json({ err });
