@@ -12,8 +12,7 @@ let contentsOfRep = fs.readdirSync(pathToRep);
 
 const app = express();
 app.use(express.static('static'));
-
-// возвращать 404
+app.use(express.json());
 
 app.get('/', (req, res) => res.json({ 
     "/api/repos": "Возвращает массив репозиториев, которые имеются в папке.", 
@@ -157,10 +156,27 @@ app.delete('/api/repos/:repositoryId*', (req, res) => {
 
 // 7-th) git clone <url>
 // таймаут для несуществующего url
-
 // curl --write-out "%{http_code}\n" --silent --output /dev/null
 // curl -L --write-out "%{http_code}\n" --silent --output /dev/null
+app.post('/api/repos', (req, res) => {
 
+    const url = req.body.url;
+    console.log(url);
+
+    let workerProcess = spawn('git', ['clone', `${url}`], {cwd: `${pathToRep}/`});
+
+    workerProcess.stderr.on('data', err => {
+        console.log('stderr: ' + err);
+        res.json({ err });
+     });
+   
+     workerProcess.on('close', code => {
+        console.log(`Exit with code ${code}`);
+     });
+
+});
+
+// 404
 app.use((req, res, next) => {
     res.status(404);
     res.send('404: File Not Found');
