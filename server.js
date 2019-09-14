@@ -66,17 +66,17 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
 
     workerProcess.stdout.on('data', data => {
         result += data.toString();
-     });
-   
-     workerProcess.stderr.on('data', err => {
+    });
+
+    workerProcess.stderr.on('data', err => {
         console.log('stderr: ' + err);
         res.json({ err });
-     });
-   
-     workerProcess.on('close', code => {
+    });
+
+    workerProcess.on('close', code => {
         console.log(`Exit with code ${code}`);
         res.send( result );
-     });
+    });
 })
 
 // 4-th) repository contents (switch to branch exists)
@@ -167,11 +167,12 @@ app.post('/api/repos', (req, res) => {
 
     workerProcess.stderr.on('data', err => {
         console.log('stderr: ' + err);
-        res.json({ err });
+        //res.json({ err });
      });
    
      workerProcess.on('close', code => {
         console.log(`Exit with code ${code}`);
+        res.send( 'CLONING - SUCCESS' );
      });
 
 });
