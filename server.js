@@ -1,7 +1,8 @@
 const express = require('express');
-const fs = require('fs');
+// const fs = require('fs');
+const fs = require('fs-extra');
 const { exec } = require('child_process');
-const { parseCommitList, getPathFromUrl } = require('./parseResponse');
+const { parseCommitList, getPathFromUrl, getPathDeleteMethod } = require('./parseResponse');
 
 // get argument from command line
 let pathToRep = process.argv[2];
@@ -155,6 +156,29 @@ app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
     })
 })
 
+// 6-th) remove repository
+// /api/repos/:repositoryId
+app.delete('/api/repos/:repositoryId*', (req, res) => {
+    console.log('STEP 6');
+
+    const repositoryId = req.params.repositoryId;
+    console.log(req.params);
+    console.log(`repositoryId : ${repositoryId}`);
+
+    let dirPath = getPathDeleteMethod(req);
+    const moddedDirPath = dirPath.replace(/\//g, '\\');
+
+    console.log(`pathToRep : ${pathToRep}`);
+    console.log(`full dirPath : ${pathToRep}${moddedDirPath}`);
+
+    // fs.rmdir(`${pathToRep}${moddedDirPath}`, err => {
+    //     console.log(err);
+    // })
+    fs.remove(`${pathToRep}${moddedDirPath}`, err => {
+        console.error(err)
+      })
+
+})
 
 app.listen(3000);
 

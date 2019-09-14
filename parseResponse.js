@@ -17,14 +17,14 @@ module.exports = {
         const startLine = (commitHash) ? `/api/repos/${repositoryId}/${variant}/${commitHash}/` : `/api/repos/${repositoryId}/${variant}/`;
         const filepath = urlpath.replace(startLine, '');
 
-        console.log('<><><>');
-        console.log(urlpath);
-        console.log(startLine);
-        console.log(filepath);
-        console.log('------------------------------');
-
         // if (urlpath.slice(-1) === '/') return filepath;
         return filepath;
+    },
+
+    getPathDeleteMethod: function(req) {
+        const urlpath = req.originalUrl.replace(req.baseUrl, "");
+        const startLine = '/api/repos/';
+        return urlpath.replace(startLine, '');
     }
 
 }
