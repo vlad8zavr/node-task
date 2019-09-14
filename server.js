@@ -1,7 +1,7 @@
 const express = require('express');
 // const fs = require('fs');
 const fs = require('fs-extra');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const { parseCommitList, parseRepositoryContent, getPathFromUrl, getPathDeleteMethod } = require('./parseResponse');
 
 // get argument from command line
@@ -61,26 +61,23 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
     // git log --pretty=format:"%H" -1
     // git log --pretty=format:"%H" -2
 
-    // get hash of the last commit
-    exec(`git log --pretty=format:"%H" -1`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
-        if (err) {
-            console.error(err);
-            res.json({ err });
-        }
-        else {
+    let result = '';
 
-            exec(`git diff ${commitHash} ${out}`, {cwd: `${pathToRep}/${repositoryId}`}, (err1, out1) => {
-                if (err1) {
-                    console.error(err1);
-                    res.json({ err1 });
-                }
-                else {
-                    console.log(out1);
-                    res.send( out1 );
-                }
-            })
-        }
-    })
+    let workerProcess = spawn('git', ['diff', `${commitHash}^1..${commitHash}`], {cwd: `${pathToRep}/${repositoryId}`});
+
+    workerProcess.stdout.on('data', function (data) {
+        result += data.toString();
+     });
+   
+     workerProcess.stderr.on('data', function (err) {
+        console.log('stderr: ' + err);
+        res.json({ err });
+     });
+   
+     workerProcess.on('close', function (code) {
+        console.log(`Exit with code ${code}`);
+        res.send( result );
+     });
 })
 
 // 4-th) repository contents (switch to branch exists)
