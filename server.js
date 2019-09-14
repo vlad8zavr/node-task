@@ -86,7 +86,7 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
     const commitHash = req.params.commitHash;
     const path = req.params.path;
 
-    const filepath = getPathFromUrl(req, repositoryId, commitHash, path);
+    const filepath = getPathFromUrl(req, repositoryId, commitHash, 'tree');
     const moddedFilePath = filepath.replace(/\//g, '\\');
 
     if (commitHash) {
@@ -121,6 +121,38 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
 app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
     // exec -> cat ./pathToFile
     // cat ./.git/objects/b9/6469de2a06092f8b4927899e1684e8e50f1ca8
+
+    console.log('STEP 5');
+
+    const repositoryId = req.params.repositoryId;
+    const commitHash = req.params.commitHash;
+    const pathToFile = req.params.pathToFile;
+
+    const filepath = getPathFromUrl(req, repositoryId, commitHash, 'blob');
+    const moddedFilePath = filepath.replace(/\//g, '\\');
+
+    console.log(moddedFilePath);
+
+    exec(`git checkout ${commitHash}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
+        if (err) {
+            console.log(err);
+            res.json({ err });
+        }
+        else {
+            console.log('CHECKOUT WAS A SUCCESS');
+            let pathToWalk = `${pathToRep}${repositoryId}\\${moddedFilePath}`;
+            console.log('pathToWalk');
+            console.log(pathToWalk);
+            // let fileContent = fs.readFileSync(`${pathToWalk}`);
+            // res.send( fileContent );
+            fs.readFile(`${pathToWalk}`, 'utf-8', (err, contents) => {
+                if (err) console.log(err);
+                console.log(contents);
+                res.json( contents );
+            });
+            console.log('after calling readFile');
+        }
+    })
 })
 
 
