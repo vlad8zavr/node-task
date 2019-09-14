@@ -2,7 +2,7 @@
 module.exports = {
 
     parseCommitList: function(out) {
-        arrayOfCommits = [];
+        let arrayOfCommits = [];
         out.split('\n').forEach(item => {
             let hash = item.split('<><><>')[0].trim();
             let date = item.split('<><><>')[1].split('|||')[0].trim();
@@ -10,6 +10,14 @@ module.exports = {
             arrayOfCommits.push({ hash: hash, commit: commit, date: date });
         });
         return arrayOfCommits;
+    },
+
+    parseRepositoryContent: function(out) {
+        let arrayOfFiles = [];
+        out.split('\n').forEach(item => {
+            if (item.trim() !== '') arrayOfFiles.push(item.trim());
+        })
+        return arrayOfFiles;
     },
 
     getPathFromUrl: function(req, repositoryId, commitHash, variant) {

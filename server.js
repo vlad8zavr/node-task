@@ -2,7 +2,7 @@ const express = require('express');
 // const fs = require('fs');
 const fs = require('fs-extra');
 const { exec } = require('child_process');
-const { parseCommitList, getPathFromUrl, getPathDeleteMethod } = require('./parseResponse');
+const { parseCommitList, parseRepositoryContent, getPathFromUrl, getPathDeleteMethod } = require('./parseResponse');
 
 // get argument from command line
 let pathToRep = process.argv[2];
@@ -13,6 +13,7 @@ let contentsOfRep = fs.readdirSync(pathToRep);
 const app = express();
 app.use(express.static('static'));
 
+// возвращать 404
 
 app.get('/', (req, res) => res.json({ 
     "/api/repos": "Возвращает массив репозиториев, которые имеются в папке.", 
@@ -35,6 +36,9 @@ app.get('/api/repos/:repositoryId/commits/:commitHash', (req, res) => {
     // git rev-parse master : 07eba6f6668952aa749015e96f1f9a086c6d6f0b
     // git rev-parse test   : 7a9229814149fab2a8af1ab84a94e9c12340913e
     
+    // git rev-list - когда коммитов много
+    // git log without less
+
     exec(`git log --pretty=format:"%H <><><> %ad ||| %s" ${commitHash}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => { 
         if (err) {
             console.error(err);
@@ -81,6 +85,7 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
 })
 
 // 4-th) repository contents (switch to branch exists)
+// git ls-tree -r --name-only <hash> <path>
 app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
 
     const repositoryId = req.params.repositoryId;
@@ -91,18 +96,15 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
     const moddedFilePath = filepath.replace(/\//g, '\\');
 
     if (commitHash) {
-        //exec(`git checkout`)
-            // fs.readdirSync()
-        exec(`git checkout ${commitHash}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
+
+        exec(`git ls-tree -r --name-only ${commitHash} ${moddedFilePath}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
             if (err) {
                 console.log(err);
                 res.json({ err });
             }
             else {
-                console.log('CHECKOUT WAS A SUCCESS');
-                let pathToWalk = `${pathToRep}${repositoryId}\\${moddedFilePath}`;
-                let contentsOfSmallRep = fs.readdirSync(`${pathToWalk}`);
-                res.send( contentsOfSmallRep );
+                let arrayOfFiles = parseRepositoryContent(out);
+                res.send( arrayOfFiles );
             }
         })
     }
@@ -110,12 +112,7 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
         let pathToWalk = (filepath !== '') ? `${pathToRep}${repositoryId}\\${moddedFilePath}` : `${pathToRep}${repositoryId}`;
         let contentsOfSmallRep = fs.readdirSync(`${pathToWalk}`);
         res.send( contentsOfSmallRep );
-    }
-
-    // let pathToWalk = (filepath !== '') ? `${pathToRep}${repositoryId}\\${moddedFilePath}` : `${pathToRep}${repositoryId}`;
-    // let contentsOfSmallRep = fs.readdirSync(`${pathToWalk}`);
-    // res.send( contentsOfSmallRep );
-    
+    }    
 })
 
 // 5-th) shows blob (no switch to branch yet)
@@ -171,14 +168,17 @@ app.delete('/api/repos/:repositoryId*', (req, res) => {
     console.log(`pathToRep : ${pathToRep}`);
     console.log(`full dirPath : ${pathToRep}${moddedDirPath}`);
 
-    // fs.rmdir(`${pathToRep}${moddedDirPath}`, err => {
-    //     console.log(err);
-    // })
     fs.remove(`${pathToRep}${moddedDirPath}`, err => {
         console.error(err)
       })
 
 })
+
+// 7-th) git clone <url>
+// таймаут для несуществующего url
+
+// curl --write-out "%{http_code}\n" --silent --output /dev/null
+// curl -L --write-out "%{http_code}\n" --silent --output /dev/null
 
 app.listen(3000);
 
