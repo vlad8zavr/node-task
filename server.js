@@ -65,23 +65,22 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
 
     let workerProcess = spawn('git', ['diff', `${commitHash}^1..${commitHash}`], {cwd: `${pathToRep}/${repositoryId}`});
 
-    workerProcess.stdout.on('data', function (data) {
+    workerProcess.stdout.on('data', data => {
         result += data.toString();
      });
    
-     workerProcess.stderr.on('data', function (err) {
+     workerProcess.stderr.on('data', err => {
         console.log('stderr: ' + err);
         res.json({ err });
      });
    
-     workerProcess.on('close', function (code) {
+     workerProcess.on('close', code => {
         console.log(`Exit with code ${code}`);
         res.send( result );
      });
 })
 
 // 4-th) repository contents (switch to branch exists)
-// git ls-tree -r --name-only <hash> <path>
 app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
 
     const repositoryId = req.params.repositoryId;
@@ -111,16 +110,13 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
     }    
 })
 
-// 5-th) shows blob (no switch to branch yet)
+// 5-th) shows blob (switch to branch exists)
 app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
     // exec -> cat ./pathToFile
     // cat ./.git/objects/b9/6469de2a06092f8b4927899e1684e8e50f1ca8
 
-    console.log('STEP 5');
-
     const repositoryId = req.params.repositoryId;
     const commitHash = req.params.commitHash;
-    const pathToFile = req.params.pathToFile;
 
     const filepath = getPathFromUrl(req, repositoryId, commitHash, 'blob');
     const moddedFilePath = filepath.replace(/\//g, '\\');
@@ -137,14 +133,12 @@ app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
             let pathToWalk = `${pathToRep}${repositoryId}\\${moddedFilePath}`;
             console.log('pathToWalk');
             console.log(pathToWalk);
-            // let fileContent = fs.readFileSync(`${pathToWalk}`);
-            // res.send( fileContent );
+
             fs.readFile(`${pathToWalk}`, 'utf-8', (err, contents) => {
                 if (err) console.log(err);
                 console.log(contents);
                 res.json( contents );
             });
-            console.log('after calling readFile');
         }
     })
 })
@@ -152,22 +146,13 @@ app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
 // 6-th) remove repository
 // /api/repos/:repositoryId
 app.delete('/api/repos/:repositoryId*', (req, res) => {
-    console.log('STEP 6');
-
-    const repositoryId = req.params.repositoryId;
-    console.log(req.params);
-    console.log(`repositoryId : ${repositoryId}`);
 
     let dirPath = getPathDeleteMethod(req);
     const moddedDirPath = dirPath.replace(/\//g, '\\');
 
-    console.log(`pathToRep : ${pathToRep}`);
-    console.log(`full dirPath : ${pathToRep}${moddedDirPath}`);
-
     fs.remove(`${pathToRep}${moddedDirPath}`, err => {
         console.error(err)
-      })
-
+    })
 })
 
 // 7-th) git clone <url>
@@ -175,6 +160,11 @@ app.delete('/api/repos/:repositoryId*', (req, res) => {
 
 // curl --write-out "%{http_code}\n" --silent --output /dev/null
 // curl -L --write-out "%{http_code}\n" --silent --output /dev/null
+
+app.use((req, res, next) => {
+    res.status(404);
+    res.send('404: File Not Found');
+});
 
 app.listen(3000);
 
