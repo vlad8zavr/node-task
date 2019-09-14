@@ -79,7 +79,7 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
     })
 })
 
-// 4-th) repository contents (no switch to branch yet)
+// 4-th) repository contents (switch to branch exists)
 app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
 
     const repositoryId = req.params.repositoryId;
@@ -92,6 +92,18 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
     if (commitHash) {
         //exec(`git checkout`)
             // fs.readdirSync()
+        exec(`git checkout ${commitHash}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
+            if (err) {
+                console.log(err);
+                res.json({ err });
+            }
+            else {
+                console.log('CHECKOUT WAS A SUCCESS');
+                let pathToWalk = `${pathToRep}${repositoryId}\\${moddedFilePath}`;
+                let contentsOfSmallRep = fs.readdirSync(`${pathToWalk}`);
+                res.send( contentsOfSmallRep );
+            }
+        })
     }
     else {
         let pathToWalk = (filepath !== '') ? `${pathToRep}${repositoryId}\\${moddedFilePath}` : `${pathToRep}${repositoryId}`;
