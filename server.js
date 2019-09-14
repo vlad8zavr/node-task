@@ -18,7 +18,10 @@ app.get('/', (req, res) => res.json({
     "/api/repos": "Возвращает массив репозиториев, которые имеются в папке.", 
     "/api/repos/:repositoryId/commits/:commitHash": "Возвращает массив коммитов в данной ветке (или хэше коммита) вместе с датами их создания.",
     "/api/repos/:repositoryId/commits/:commitHash/diff": "Возвращает diff коммита в виде строки.",
-    "/api/repos/:repositoryId(/tree/:commitHash/:path)": "Возвращает содержимое репозитория по названию ветки (или хэшу комита)." 
+    "/api/repos/:repositoryId(/tree/:commitHash/:path)": "Возвращает содержимое репозитория по названию ветки (или хэшу комита).",
+    "/api/repos/:repositoryId/blob/:commitHash/:pathToFile": "Возвращает содержимое конкретного файла, находящегося по пути pathToFile в ветке (или по хэшу коммита) branchName.",
+    "/api/repos/:repositoryId": "Безвозвратно удаляет репозиторий.",
+    "/api/repos + { url: ‘repo-url’ }": "Добавляет репозиторий в список, скачивает его по переданной в теле запроса ссылке и добавляет в папку со всеми репозиториями."
 }));
 
 // 1-st) shows all repos
@@ -50,7 +53,7 @@ app.get('/api/repos/:repositoryId/commits/:commitHash', (req, res) => {
 
 })
 
-// 3-rd) shows diff (don't check the merged commit (2 parents) yet)
+// 3-rd) shows diff (parse answer - ?)
 app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
 
     const repositoryId = req.params.repositoryId;
@@ -110,6 +113,9 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
 })
 
 // 5-th) shows blob (switch to branch exists)
+/**
+ * MIGHT BE MEMORY PROBLEMS
+ */
 app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
     // exec -> cat ./pathToFile
     // cat ./.git/objects/b9/6469de2a06092f8b4927899e1684e8e50f1ca8
@@ -143,7 +149,6 @@ app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
 })
 
 // 6-th) remove repository
-// /api/repos/:repositoryId
 app.delete('/api/repos/:repositoryId*', (req, res) => {
 
     let dirPath = getPathDeleteMethod(req);
