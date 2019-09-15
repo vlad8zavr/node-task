@@ -116,7 +116,7 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
 /**
  * MIGHT BE MEMORY PROBLEMS
  */
-app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
+app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile*', (req, res) => {
     // exec -> cat ./pathToFile
     // cat ./.git/objects/b9/6469de2a06092f8b4927899e1684e8e50f1ca8
 
@@ -141,10 +141,11 @@ app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
 
             fs.readFile(`${pathToWalk}`, 'utf-8', (err, contents) => {
                 if (err) console.log(err);
-                console.log(contents);
+                //console.log(contents);
                 res.json( contents );
             });
         }
+        console.log('----------------------------');
     })
 })
 
@@ -190,3 +191,9 @@ app.use((req, res, next) => {
 
 app.listen(3000);
 
+/**
+ * IDEAS FOR PAGINATION
+ * make a get request for only 10 (for example) last commits (commits/hash/1)
+ * then 10 previous commits (commits/hash/2)
+ * ...
+ */
