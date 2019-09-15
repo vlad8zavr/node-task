@@ -113,9 +113,6 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*?/:path*?', (req, res) => {
 })
 
 // 5-th) shows blob (switch to branch exists)
-/**
- * MIGHT BE MEMORY PROBLEMS
- */
 app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile*', (req, res) => {
     // exec -> cat ./pathToFile
     // cat ./.git/objects/b9/6469de2a06092f8b4927899e1684e8e50f1ca8
@@ -139,11 +136,15 @@ app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile*', (req, res) => 
             console.log('pathToWalk');
             console.log(pathToWalk);
 
-            fs.readFile(`${pathToWalk}`, 'utf-8', (err, contents) => {
-                if (err) console.log(err);
-                //console.log(contents);
-                res.json( contents );
-            });
+            // fs.readFile(`${pathToWalk}`, 'utf-8', (err, contents) => {
+            //     if (err) console.log(err);
+            //     //console.log(contents);
+            //     res.json( contents );
+            // });
+
+            // possible memory problem fix
+            const stream = fs.createReadStream(`${pathToWalk}`);
+            stream.pipe(res);
         }
         console.log('----------------------------');
     })
