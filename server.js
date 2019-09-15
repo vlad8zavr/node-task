@@ -21,7 +21,8 @@ app.get('/', (req, res) => res.json({
     "/api/repos/:repositoryId(/tree/:commitHash/:path)": "Возвращает содержимое репозитория по названию ветки (или хэшу комита).",
     "/api/repos/:repositoryId/blob/:commitHash/:pathToFile": "Возвращает содержимое конкретного файла, находящегося по пути pathToFile в ветке (или по хэшу коммита) branchName.",
     "/api/repos/:repositoryId": "Безвозвратно удаляет репозиторий.",
-    "/api/repos + { url: ‘repo-url’ }": "Добавляет репозиторий в список, скачивает его по переданной в теле запроса ссылке и добавляет в папку со всеми репозиториями."
+    "/api/repos + { url: ‘repo-url’ }": "Добавляет репозиторий в список, скачивает его по переданной в теле запроса ссылке и добавляет в папку со всеми репозиториями.",
+    "/api/repos/:repositoryId/commitsPagination/:commitHash/:numberOfCommits/:listNumber": "Пагинация списка коммитов."
 }));
 
 // 1-st) shows all repos
