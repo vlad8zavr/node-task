@@ -186,7 +186,6 @@ app.post('/api/repos', (req, res) => {
 });
 
 // bonus 1) pagination for the list of commits
-// вывод с начала
 // git --no-pager log --pretty=format:"%H <><><> %ad ||| %s" | head -n 20 | tail -n 10
 // WORKS IN BASH (GIT) console on windows
 // doesn't work from vsCode terminal
@@ -197,13 +196,14 @@ app.get('/api/repos/:repositoryId/commitsPagination/:commitHash/:numberOfCommits
     const listNumber = req.params.listNumber;
 
     // listNumber 1 => head - numberOfCommits
-    // listNumber n => head - numberOfCommits * listNumber ; tail - numberOfCommits * (listNumber - 1)
+    // listNumber n => head - numberOfCommits * listNumber ; tail - numberOfCommits
 
     let pagPart = (listNumber === '1') 
         ? `head -n ${numberOfCommits}` 
-        : `head -n ${numberOfCommits * listNumber} | tail -n ${numberOfCommits * (listNumber - 1)}`;
+        : `head -n ${numberOfCommits * listNumber} | tail -n ${numberOfCommits}`;
 
     console.log('BONUS 1');
+    console.log(`git --no-pager log --pretty=format:"%H <><><> %ad ||| %s" ${commitHash} | ${pagPart}`);
 
     exec(`git --no-pager log --pretty=format:"%H <><><> %ad ||| %s" ${commitHash} | ${pagPart}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
         if (err) {
@@ -224,10 +224,3 @@ app.use((req, res, next) => {
 });
 
 app.listen(3000);
-
-/**
- * IDEAS FOR PAGINATION
- * make a get request for only 10 (for example) last commits (commits/hash/1)
- * then 10 previous commits (commits/hash/2)
- * ...
- */
