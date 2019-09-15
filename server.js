@@ -184,6 +184,38 @@ app.post('/api/repos', (req, res) => {
 
 });
 
+// bonus 1) pagination for the list of commits
+// вывод с начала
+// git --no-pager log --pretty=format:"%H <><><> %ad ||| %s" | head -n 20 | tail -n 10
+// WORKS IN BASH (GIT) console on windows
+// doesn't work from vsCode terminal
+app.get('/api/repos/:repositoryId/commitsPagination/:commitHash/:numberOfCommits/:listNumber', (req, res) => {
+    const repositoryId = req.params.repositoryId;
+    const commitHash = req.params.commitHash;
+    const numberOfCommits = req.params.numberOfCommits;
+    const listNumber = req.params.listNumber;
+
+    // listNumber 1 => head - numberOfCommits
+    // listNumber n => head - numberOfCommits * listNumber ; tail - numberOfCommits * (listNumber - 1)
+
+    let pagPart = (listNumber === '1') 
+        ? `head -n ${numberOfCommits}` 
+        : `head -n ${numberOfCommits * listNumber} | tail -n ${numberOfCommits * (listNumber - 1)}`;
+
+    console.log('BONUS 1');
+
+    exec(`git --no-pager log --pretty=format:"%H <><><> %ad ||| %s" ${commitHash} | ${pagPart}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
+        if (err) {
+            console.error(err);
+            res.json({ err });
+        }
+        else {
+            const arrayOfCommits = parseCommitList(out);
+            res.send( arrayOfCommits );
+        }
+    })
+})
+
 // 404
 app.use((req, res, next) => {
     res.status(404);
