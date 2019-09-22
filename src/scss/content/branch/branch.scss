@@ -1,0 +1,58 @@
+
+.branch-list {
+    display: flex;
+    flex-direction: column;
+
+    font-family: var(--font-YS-Text);
+    font-size: 14px;
+    line-height: 20px;
+
+    &__head, &__item  {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__head {
+        padding: 15px 0 8px 0;
+
+        border-bottom: 1px solid var(--border-current-path);
+        color: var(--text-light-gray);
+    }
+
+    &__item {
+        padding: 15px 0 12px 0;
+
+        border-bottom: 1px solid var(--border-light-gray);
+
+        &:last-child {
+            border: none;
+        }
+    }
+
+    &__name {
+        display: flex;
+        align-items: center;
+    }
+
+    &__icon {
+        display: flex;
+        align-items: center;
+
+        margin-right: 8px;
+    }
+
+    &__text {
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--text-black);
+    }
+
+    &__commit {
+        font-size: 14px;
+        line-height: 20px;
+
+        &_blue {
+            color: var(--text-blue);
+        }
+    }
+}

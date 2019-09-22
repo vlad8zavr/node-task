@@ -1,0 +1,45 @@
+
+.footer {
+    // display: grid;
+    // grid-template-columns: 3fr 1fr 1fr;
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    margin: 0 -8px;
+    padding: 17px 20px 14px 20px;
+
+    font-family: var(--font-YS-Text);
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--text-dark-gray);
+
+    &__side {
+        display: flex;
+
+        &_align-items {
+            
+            &_right {
+                text-align: right;
+            }
+        }
+    }
+
+    &__address {
+
+    }
+
+    &__ui {
+        margin-right: 32px;
+    }
+
+    &__license {
+
+    }
+
+    &__href {
+        color: var(--text-blue);
+        text-decoration: none;
+    }
+}

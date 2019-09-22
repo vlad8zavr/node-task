@@ -1,0 +1,65 @@
+
+.content-area {
+    display: flex;
+    flex-direction: column;
+
+    font-family: var(--font-YS-Text);
+    font-size: 14px;
+    line-height: 20px;
+
+    &__head, &__item  {
+        display: grid;
+        grid-column-gap: 5px;
+        grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+    }
+    &__head {
+        padding: 15px 8px 8px 8px;
+        border-bottom: 1px solid var(--border-current-path);
+        color: var(--text-light-gray);
+    }
+    &__item {
+        padding: 15px 8px 12px 8px;
+        border-bottom: 1px solid var(--border-light-gray);
+
+        &:last-child {
+            border: none;
+        }
+    }
+
+    &__name {
+        display: flex;
+        align-items: center;
+    }
+    &__commit {
+        &_blue {
+            color: var(--text-blue);
+        }
+    }
+    &__message {
+        
+    }
+    &__committer {
+
+    }
+    &__date {
+        text-align: right;
+    }
+
+    &__icon {
+        display: flex;
+        align-items: center;
+
+        margin-right: 8px;
+    }
+    &__text {
+
+    }
+
+    &__message-part {
+        &_blue {
+            color: var(--text-blue);
+            text-transform: uppercase;
+        }
+    }
+
+}

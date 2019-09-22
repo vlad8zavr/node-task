@@ -1,0 +1,31 @@
+
+.current-path {
+    display: flex;
+
+    border-bottom: 1px solid var(--border-current-path);
+
+    font-family: var(--font-YS-Text);
+    
+    &__content {
+        flex: 1;
+    }
+
+    &__text {
+        padding: 12px 0 12px 0;
+
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: bold;
+        color: var(--text-black);
+    }
+
+    &__previous {
+        color: var(--text-dark-gray);
+    }
+
+    &__divider {
+        margin: 0 10px 0 10px;
+        color: var(--text-dark-gray);
+    }
+
+}
