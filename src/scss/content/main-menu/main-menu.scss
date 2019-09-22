@@ -1,0 +1,24 @@
+
+.main-menu {
+    display: flex;
+
+    border-bottom: 1px solid var(--border-current-path);
+
+    font-family: var(--font-YS-Text);
+
+    &__item {
+        display: flex;
+        padding: 13px 0;
+        margin-right: 20px;
+
+        font-size: 20px;
+        font-weight: normal;
+        color: var(--text-dark-gray);
+        text-transform: uppercase;
+
+        &_active {
+            color: var(--text-black);
+            border-bottom: 3px solid var(--border-red);
+        }
+    }
+}

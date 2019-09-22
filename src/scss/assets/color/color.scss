@@ -1,0 +1,33 @@
+
+:root {
+    /* background */
+    --background-dark-gray: #4F4F4F;
+    --background-light-gray: #F5F5F5;
+    --background-history-icon: #EBF6FD;
+    --background-show-files: #E6E6E6;
+    --background-current-commit-added: #E6FFED;
+    --background-current-commit-removed: #FFEEF0;
+    --background-current-commit-collapsed: #F1F8FF;
+    /* border */
+    --border-header: #F0F2F3;
+    --border-current-path: #E5E5E5;
+    --border-light-gray: #F2F2F2;
+    --border-gray: #E5E5E5;
+    --border-red: #FF4F49;
+    --border-redactor-icon: #CCCCCC;
+    /* text */
+    --text-black: #000000;
+    --text-dark: #434445;
+    --text-dark-gray: #7F8285;
+    --text-light-gray: #B8BEC3;
+    --text-blue: #1774E9;
+    --text-red: #FF3029;
+    --text-redactor-size: #999999;
+    --text-redactor-normal: #304C6D;
+    --text-redactor-comment: #95A1AD;
+    --text-redactor-bold: #00234B;
+    --text-redactor-string: #2073C2;
+    --text-current-commit-violet: #6B69C7;
+    --text-current-commit-green: #19BC4D;
+    --text-current-commit-comment: #33A533;
+}

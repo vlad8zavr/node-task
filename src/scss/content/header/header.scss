@@ -1,0 +1,77 @@
+
+.header {
+    display: flex;
+    margin: 0 -8px;
+    margin-top: -8px;
+
+    border-bottom: 1px solid var(--border-header);
+
+    font-family: var(--font-YS-Text);
+
+    &__logo {
+        display: flex;
+        margin: 0 40px 0 32px;
+        padding: 16px 0 17px 0;
+    }
+
+    &__menu {
+        display: flex;
+        padding: 20px 0 14px 0;
+
+        border-bottom: 3px solid var(--border-red);
+
+        font-size: 14px;
+        line-height: 18px;
+        color: var(--text-black);
+
+        &_collapsed {
+            position: relative;
+
+            &:before, &:after {
+                border-right: 2px solid var(--text-black);
+                content: '';
+                display: block;
+                height: 6px;
+                position: absolute;
+                transform: rotate(45deg);
+                right: -14px;
+                top: 50%;
+                width: 0;
+            }
+            &:after {
+                right: -11px;
+                transform: rotate(135deg);
+            }
+        }
+
+        &_expanded {
+            position: relative;
+
+            &:before, &:after {
+                border-right: 2px solid var(--text-black);
+                content: '';
+                display: block;
+                height: 6px;
+                margin-top: -2px;
+                position: absolute;
+                transform: rotate(-45deg);
+                right: -14px;
+                top: 50%;
+                width: 0;
+            }
+            &:after {
+                right: -11px;
+                transform: rotate(-135deg);
+            }
+        }
+    }
+
+    &__pre-name {
+        margin-right: 4px;
+        font-weight: bold;
+    }
+
+    &__name {
+        font-weight: normal;
+    }
+}

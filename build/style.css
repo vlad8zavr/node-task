@@ -1,0 +1,721 @@
+:root {
+  /* YS Text */
+  --font-YS-Text: sans-serif;
+  --font-PT-Mono: PT Mono; }
+
+:root {
+  /* background */
+  --background-dark-gray: #4F4F4F;
+  --background-light-gray: #F5F5F5;
+  --background-history-icon: #EBF6FD;
+  --background-show-files: #E6E6E6;
+  --background-current-commit-added: #E6FFED;
+  --background-current-commit-removed: #FFEEF0;
+  --background-current-commit-collapsed: #F1F8FF;
+  /* border */
+  --border-header: #F0F2F3;
+  --border-current-path: #E5E5E5;
+  --border-light-gray: #F2F2F2;
+  --border-gray: #E5E5E5;
+  --border-red: #FF4F49;
+  --border-redactor-icon: #CCCCCC;
+  /* text */
+  --text-black: #000000;
+  --text-dark: #434445;
+  --text-dark-gray: #7F8285;
+  --text-light-gray: #B8BEC3;
+  --text-blue: #1774E9;
+  --text-red: #FF3029;
+  --text-redactor-size: #999999;
+  --text-redactor-normal: #304C6D;
+  --text-redactor-comment: #95A1AD;
+  --text-redactor-bold: #00234B;
+  --text-redactor-string: #2073C2;
+  --text-current-commit-violet: #6B69C7;
+  --text-current-commit-green: #19BC4D;
+  --text-current-commit-comment: #33A533; }
+
+.author_first-letter_red:first-letter {
+  color: var(--text-red); }
+
+pre {
+  font-family: var(--font-PT-Mono);
+  margin: 0; }
+
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 -8px;
+  margin-top: -8px;
+  border-bottom: 1px solid var(--border-header);
+  font-family: var(--font-YS-Text); }
+  .header__logo {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 0 40px 0 32px;
+    padding: 16px 0 17px 0; }
+  .header__menu {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 20px 0 14px 0;
+    border-bottom: 3px solid var(--border-red);
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--text-black); }
+    .header__menu_collapsed {
+      position: relative; }
+      .header__menu_collapsed:before, .header__menu_collapsed:after {
+        border-right: 2px solid var(--text-black);
+        content: '';
+        display: block;
+        height: 6px;
+        position: absolute;
+        -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+        right: -14px;
+        top: 50%;
+        width: 0; }
+      .header__menu_collapsed:after {
+        right: -11px;
+        -webkit-transform: rotate(135deg);
+            -ms-transform: rotate(135deg);
+                transform: rotate(135deg); }
+    .header__menu_expanded {
+      position: relative; }
+      .header__menu_expanded:before, .header__menu_expanded:after {
+        border-right: 2px solid var(--text-black);
+        content: '';
+        display: block;
+        height: 6px;
+        margin-top: -2px;
+        position: absolute;
+        -webkit-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+                transform: rotate(-45deg);
+        right: -14px;
+        top: 50%;
+        width: 0; }
+      .header__menu_expanded:after {
+        right: -11px;
+        -webkit-transform: rotate(-135deg);
+            -ms-transform: rotate(-135deg);
+                transform: rotate(-135deg); }
+  .header__pre-name {
+    margin-right: 4px;
+    font-weight: bold; }
+  .header__name {
+    font-weight: normal; }
+
+.main {
+  margin: 0 -8px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border-header); }
+
+.current-path {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid var(--border-current-path);
+  font-family: var(--font-YS-Text); }
+  .current-path__content {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+  .current-path__text {
+    padding: 12px 0 12px 0;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: bold;
+    color: var(--text-black); }
+  .current-path__previous {
+    color: var(--text-dark-gray); }
+  .current-path__divider {
+    margin: 0 10px 0 10px;
+    color: var(--text-dark-gray); }
+
+.current-info {
+  font-family: var(--font-YS-Text); }
+  .current-info__heading {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 10px 0; }
+  .current-info__name {
+    margin-right: 6px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-black); }
+    .current-info__name_normal {
+      font-weight: normal; }
+  .current-info__menu {
+    position: relative;
+    font-size: 24px;
+    font-weight: normal;
+    color: var(--text-dark-gray); }
+    .current-info__menu:before, .current-info__menu:after {
+      border-right: 2px solid var(--text-dark-gray);
+      content: '';
+      display: block;
+      height: 8px;
+      margin-top: -3px;
+      position: absolute;
+      -webkit-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+              transform: rotate(45deg);
+      right: -18px;
+      top: 50%;
+      width: 0; }
+    .current-info__menu:after {
+      right: -13px;
+      margin-top: -3px;
+      -webkit-transform: rotate(135deg);
+          -ms-transform: rotate(135deg);
+              transform: rotate(135deg); }
+  .current-info__text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    padding: 10px 0;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: normal;
+    color: var(--text-black); }
+  .current-info__commit, .current-info__date {
+    margin: 0 4px;
+    color: var(--text-blue); }
+  .current-info__author {
+    margin: 0; }
+  .current-info__divider_right {
+    margin-right: 4px; }
+  .current-info__show-files {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 6px 12px;
+    background-color: var(--background-show-files);
+    border-radius: 4px; }
+  .current-info__show-files-text {
+    font-size: 13px;
+    line-height: 15px;
+    color: var(--text-black); }
+  .current-info__icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-right: 6px; }
+  .current-info_layout_space-between {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+
+.main-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid var(--border-current-path);
+  font-family: var(--font-YS-Text); }
+  .main-menu__item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 13px 0;
+    margin-right: 20px;
+    font-size: 20px;
+    font-weight: normal;
+    color: var(--text-dark-gray);
+    text-transform: uppercase; }
+    .main-menu__item_active {
+      color: var(--text-black);
+      border-bottom: 3px solid var(--border-red); }
+
+.content-area {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-family: var(--font-YS-Text);
+  font-size: 14px;
+  line-height: 20px; }
+  .content-area__head, .content-area__item {
+    display: grid;
+    grid-column-gap: 5px;
+    grid-template-columns: 1fr 1fr 2fr 1fr 1fr; }
+  .content-area__head {
+    padding: 15px 8px 8px 8px;
+    border-bottom: 1px solid var(--border-current-path);
+    color: var(--text-light-gray); }
+  .content-area__item {
+    padding: 15px 8px 12px 8px;
+    border-bottom: 1px solid var(--border-light-gray); }
+    .content-area__item:last-child {
+      border: none; }
+  .content-area__name {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .content-area__commit_blue {
+    color: var(--text-blue); }
+  .content-area__date {
+    text-align: right; }
+  .content-area__icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-right: 8px; }
+  .content-area__message-part_blue {
+    color: var(--text-blue);
+    text-transform: uppercase; }
+
+.footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin: 0 -8px;
+  padding: 17px 20px 14px 20px;
+  font-family: var(--font-YS-Text);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-dark-gray); }
+  .footer__side {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    .footer__side_align-items_right {
+      text-align: right; }
+  .footer__ui {
+    margin-right: 32px; }
+  .footer__href {
+    color: var(--text-blue);
+    text-decoration: none; }
+
+.redactor {
+  margin: 16px 0;
+  border: 1px solid var(--border-current-path);
+  border-radius: 4px;
+  font-family: var(--font-YS-Text); }
+  .redactor__head {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 8px 16px;
+    background-color: var(--background-light-gray);
+    border-bottom: 1px solid var(--border-current-path); }
+  .redactor__head-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .redactor__head-text-icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .redactor__head-name {
+    margin: 0 1px 0 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-black); }
+  .redactor__head-size {
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--text-redactor-size); }
+  .redactor__head-icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 7px 11px 6px 11px;
+    border: 1px solid var(--border-redactor-icon); }
+  .redactor__body {
+    font-family: var(--font-PT-Mono);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px; }
+  .redactor__line {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+  .redactor__line-order {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 40px;
+    color: var(--text-redactor-size); }
+  .redactor__line-order-num {
+    width: 40px;
+    text-align: right; }
+  .redactor__line-text {
+    margin-left: 30px;
+    color: var(--text-redactor-normal); }
+    .redactor__line-text_comment {
+      color: var(--text-redactor-comment); }
+    .redactor__line-text_bold {
+      color: var(--text-redactor-bold);
+      font-weight: bold; }
+    .redactor__line-text_string {
+      color: var(--text-redactor-string); }
+    .redactor__line-text_func {
+      color: var(--text-redactor-string);
+      font-weight: bold; }
+
+.history {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 6px 0 24px 0;
+  font-family: var(--font-YS-Text); }
+  .history__head {
+    margin: 18px 0 16px 0;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--text-dark-gray); }
+  .history__item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    margin-bottom: 16px; }
+    .history__item:last-child {
+      margin-bottom: 0; }
+  .history__description {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+  .history__description-icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+    background-color: var(--background-history-icon);
+    border-radius: 50%; }
+  .history__description-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    color: var(--text-black); }
+  .history__name {
+    font-size: 14px;
+    line-height: 18px; }
+  .history__message {
+    font-size: 13px;
+    line-height: 18px; }
+  .history__info {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    font-size: 13px;
+    line-height: 20px; }
+  .history__hash {
+    margin-right: 8px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--text-blue); }
+  .history__committer, .history__date {
+    margin: 0 4px;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--text-dark); }
+
+.branch-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-family: var(--font-YS-Text);
+  font-size: 14px;
+  line-height: 20px; }
+  .branch-list__head, .branch-list__item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+  .branch-list__head {
+    padding: 15px 0 8px 0;
+    border-bottom: 1px solid var(--border-current-path);
+    color: var(--text-light-gray); }
+  .branch-list__item {
+    padding: 15px 0 12px 0;
+    border-bottom: 1px solid var(--border-light-gray); }
+    .branch-list__item:last-child {
+      border: none; }
+  .branch-list__name {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .branch-list__icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-right: 8px; }
+  .branch-list__text {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-black); }
+  .branch-list__commit {
+    font-size: 14px;
+    line-height: 20px; }
+    .branch-list__commit_blue {
+      color: var(--text-blue); }
+
+.current-commit {
+  margin: 16px 0;
+  border: 1px solid var(--border-current-path);
+  border-radius: 4px;
+  font-family: var(--font-YS-Text); }
+  .current-commit__head {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 13px 16px 8px 12px;
+    background-color: var(--background-light-gray);
+    border-bottom: 1px solid var(--border-current-path); }
+  .current-commit__head-left, .current-commit__head-right {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .current-commit__head-symbol {
+    margin-right: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-current-commit-violet); }
+  .current-commit__head-icon-file {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-right: 8px; }
+  .current-commit__head-text {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-black); }
+  .current-commit__head-added {
+    margin-right: 16px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-current-commit-green); }
+  .current-commit__head-removed {
+    margin-right: 24px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-red); }
+  .current-commit__head-icon-clone {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .current-commit__body {
+    font-family: var(--font-PT-Mono);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px; }
+  .current-commit__line {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    .current-commit__line_added {
+      background-color: var(--background-current-commit-added); }
+    .current-commit__line_removed {
+      background-color: var(--background-current-commit-removed); }
+    .current-commit__line_collapsed {
+      display: grid;
+      grid-column-gap: 5px;
+      grid-template-columns: 2fr 3fr;
+      padding: 4px 12px;
+      background-color: var(--background-current-commit-collapsed);
+      font-size: 12px;
+      color: var(--text-light-gray); }
+  .current-commit__line-controls {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+  .current-commit__control {
+    position: relative; }
+    .current-commit__control_active {
+      color: var(--text-black); }
+    .current-commit__control:last-child {
+      margin-left: 50px; }
+    .current-commit__control_below:before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      bottom: 2px;
+      border: 5px solid transparent;
+      border-top: 5px solid var(--text-light-gray); }
+    .current-commit__control_above {
+      color: var(--text-black); }
+      .current-commit__control_above:before {
+        content: '';
+        position: absolute;
+        left: -16px;
+        bottom: 7px;
+        border: 5px solid transparent;
+        border-bottom: 5px solid var(--text-black); }
+  .current-commit__line-order {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 80px;
+    color: var(--text-redactor-size); }
+  .current-commit__num-left, .current-commit__num-right {
+    width: 40px;
+    text-align: right; }
+  .current-commit__line-text {
+    margin-left: 30px;
+    color: var(--text-black); }
+    .current-commit__line-text_blue {
+      color: var(--text-blue); }
+    .current-commit__line-text_red {
+      color: var(--text-red); }
+    .current-commit__line-text_comment {
+      color: var(--text-current-commit-comment); }
+    @media screen and (max-width: 920px) {
+  .header__logo {
+    margin: 0 26px 0 16px; }
+  .main {
+    padding: 0 16px; }
+  .content-area__head {
+    display: none; }
+  .content-area__item {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas: "dir   dir     dir    dir    dir    dir" "name  name    name   name   name   name" "hash  author  date   date   date   date"; }
+    .content-area__item:before, .content-area__item:after {
+      border-right: 2px solid var(--border-gray);
+      content: '';
+      display: block;
+      height: 14px;
+      margin-top: 27px;
+      position: absolute;
+      -webkit-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+              transform: rotate(45deg);
+      right: 24px;
+      width: 0; }
+    .content-area__item:after {
+      margin-top: 18px;
+      -webkit-transform: rotate(135deg);
+          -ms-transform: rotate(135deg);
+              transform: rotate(135deg); }
+  .content-area__name {
+    grid-area: dir; }
+  .content-area__message {
+    grid-area: name; }
+  .content-area__commit {
+    grid-area: hash; }
+  .content-area__committer {
+    grid-area: author; }
+    .content-area__committer:after {
+      content: ','; }
+  .content-area__date {
+    grid-area: date;
+    text-align: left; }
+  .redactor__body {
+    overflow-x: scroll; } }
+    @media screen and (max-width: 500px) {
+  .redactor {
+    margin: 16px -16px;
+    border-radius: 0px; }
+    .redactor__head-icon {
+      display: none; }
+  .branch-list__head {
+    display: none; }
+  .branch-list__item {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+  .history__hash {
+    display: none; } }
+

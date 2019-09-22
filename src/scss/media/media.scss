@@ -1,0 +1,91 @@
+
+@media screen and (max-width: 920px) {
+    .header__logo {
+        margin: 0 26px 0 16px;
+    }
+    .main {
+        padding: 0 16px;
+    }
+    .content-area {
+        &__head {
+            display: none;
+        }
+        &__item {
+            //grid-template-columns: 1fr;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-areas: "dir   dir     dir    dir    dir    dir"
+                                 "name  name    name   name   name   name"
+                                 "hash  author  date   date   date   date";
+            
+            &:before, &:after {
+                border-right: 2px solid var(--border-gray);
+                content: '';
+                display: block;
+                height: 14px;
+                margin-top: 27px;
+                position: absolute;
+                transform: rotate(45deg);
+                right: 24px;
+                //top: 50%;
+                width: 0;
+            }
+            &:after {
+                //right: 30px;
+                margin-top: 18px;
+                transform: rotate(135deg);
+            }
+        }
+        &__name {
+            //order: -2;
+            grid-area: dir;
+        }
+        &__message {
+            //order: -1;
+            grid-area: name;
+        }
+        &__commit {
+            grid-area: hash;
+        }
+        &__committer {
+            grid-area: author;
+            &:after {
+                content: ',';
+            }
+        }
+        &__date {
+            grid-area: date;
+            text-align: left;
+        }
+    }
+    .redactor {
+        &__body {
+            overflow-x: scroll;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .redactor {
+        margin: 16px -16px;
+        border-radius: 0px;
+
+        &__head-icon {
+            display: none;
+        }
+    }
+    
+    .branch-list {
+        &__head {
+            display: none;
+        }
+        &__item {
+            flex-direction: column;
+        }
+    }
+
+    .history {
+        &__hash {
+            display: none;
+        }
+    }
+}

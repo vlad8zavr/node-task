@@ -1,0 +1,106 @@
+
+.current-info {
+    font-family: var(--font-YS-Text);
+
+    &__heading {
+        display: flex;
+        padding: 10px 0;
+    }
+
+    &__name {
+        margin-right: 6px;
+
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--text-black);
+
+        &_normal {
+            font-weight: normal;
+        }
+    }
+
+    &__menu {
+        position: relative;
+
+        font-size: 24px;
+        font-weight: normal;
+        color: var(--text-dark-gray);
+
+        &:before, &:after {
+            border-right: 2px solid var(--text-dark-gray);
+            content: '';
+            display: block;
+            height: 8px;
+            margin-top: -3px;
+            position: absolute;
+            transform: rotate(45deg);
+            right: -18px;
+            top: 50%;
+            width: 0;
+        }
+        &:after {
+            right: -13px;
+            margin-top: -3px;
+            transform: rotate(135deg);
+        }
+    }
+    &__text {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px 0;
+
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: normal;
+        color: var(--text-black);
+    }
+
+    &__commit, &__date {
+        margin: 0 4px;
+        color: var(--text-blue);
+    }
+
+    &__author {
+        margin: 0;
+    }
+
+    &__divider {
+        &_right {
+            margin-right: 4px;
+        }
+    }
+
+    &__show-files {
+        display: flex;
+
+        padding: 6px 12px;
+        
+        background-color: var(--background-show-files);
+        border-radius: 4px;
+    }
+
+    &__show-files-text {
+        font-size: 13px;
+        line-height: 15px;
+        color: var(--text-black);
+    }
+
+    &__show-files-commit {
+
+    }
+
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        margin-right: 6px;
+    }
+
+    &_layout {
+        &_space-between {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

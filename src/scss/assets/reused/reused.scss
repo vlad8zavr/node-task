@@ -1,0 +1,11 @@
+
+.author_first-letter_red {
+    &:first-letter {
+        color: var(--text-red);
+    }
+}
+
+pre {
+    font-family: var(--font-PT-Mono);
+    margin: 0;
+}
