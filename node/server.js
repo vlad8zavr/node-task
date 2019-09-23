@@ -3,12 +3,15 @@ const express = require('express');
 const fs = require('fs-extra');
 const { exec, spawn } = require('child_process');
 const { parseCommitList, parseRepositoryContent, getPathFromUrl, getPathDeleteMethod } = require('./parseResponse');
+const { showAllRepos } = require('./controllers/controllers');
+
 
 // get argument from command line
-let pathToRep = process.argv[2];
+// put in global for convenience
+global.pathToRep = process.argv[2];
 
 // get array of dirrectory contents
-let contentsOfRep = fs.readdirSync(pathToRep);
+//let contentsOfRep = fs.readdirSync(pathToRep);
 
 const app = express();
 app.use(express.static('static'));
@@ -24,6 +27,11 @@ app.get('/', (req, res) => res.json({
     "/api/repos + { url: ‘repo-url’ }": "Добавляет репозиторий в список, скачивает его по переданной в теле запроса ссылке и добавляет в папку со всеми репозиториями.",
     "/api/repos/:repositoryId/commitsPagination/:commitHash/:numberOfCommits/:listNumber": "Пагинация списка коммитов."
 }));
+
+app.get('/api/repos', showAllRepos);
+
+
+/**********OLD  
 
 // 1-st) shows all repos
 app.get('/api/repos', (req, res) => res.send( contentsOfRep ));
@@ -216,6 +224,8 @@ app.get('/api/repos/:repositoryId/commitsPagination/:commitHash/:numberOfCommits
         }
     })
 })
+
+*/
 
 // 404
 app.use((req, res, next) => {
