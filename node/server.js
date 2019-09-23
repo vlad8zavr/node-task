@@ -3,7 +3,7 @@ const express = require('express');
 const fs = require('fs-extra');
 const { exec, spawn } = require('child_process');
 const { parseCommitList, parseRepositoryContent, getPathFromUrl, getPathDeleteMethod } = require('./parseResponse');
-const { showAllRepos, showAllCommits, showDiff, showTree } = require('./controllers/controllers');
+const { showAllRepos, showAllCommits, showDiff, showTree, showBlob } = require('./controllers/controllers');
 
 
 // get argument from command line
@@ -34,10 +34,44 @@ app.get('/api/repos/:repositoryId/commits/:commitHash', showAllCommits);
 
 app.get('/api/repos/:repositoryId/commits/:commitHash/diff', showDiff);
 
-
 app.get('/api/repos/:repositoryId', showTree);
+app.get('/api/repos/:repositoryId/tree/:commitHash?/:path([^/]*)?', showTree);
 
-app.get(`/api/repos/:repositoryId/tree/:commitHash?/:path([^/]*)?`, showTree);
+//app.get('/api/repos/:repositoryId/blob/', showBlob);
+
+app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile([^/]*)', showBlob);
+
+
+// app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile*', (req, res) => {
+
+//     console.log(req.params);
+
+//     const repositoryId = req.params.repositoryId;
+//     const commitHash = req.params.commitHash;
+
+//     const filepath = getPathFromUrl(req, repositoryId, commitHash, 'blob');
+//     const moddedFilePath = filepath.replace(/\//g, '\\');
+
+//     console.log(moddedFilePath);
+
+//     exec(`git checkout ${commitHash}`, {cwd: `${pathToRep}/${repositoryId}`}, (err, out) => {
+//         if (err) {
+//             console.log(err);
+//             res.json({ err });
+//         }
+//         else {
+//             console.log('CHECKOUT WAS A SUCCESS');
+//             let pathToWalk = `${pathToRep}${repositoryId}\\${moddedFilePath}`;
+//             console.log('pathToWalk');
+//             console.log(pathToWalk);
+
+//             // possible memory problem fix
+//             const stream = fs.createReadStream(`${pathToWalk}`);
+//             stream.pipe(res);
+//         }
+//         console.log('----------------------------');
+//     })
+// })
 
 
 
@@ -178,6 +212,7 @@ app.delete('/api/repos/:repositoryId*', (req, res) => {
     fs.remove(`${pathToRep}${moddedDirPath}`, err => {
         console.error(err)
     })
+    //res.end();
 })
 
 // 7-th) git clone <url>

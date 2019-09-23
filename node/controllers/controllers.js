@@ -14,8 +14,9 @@ exports.showAllRepos = (req, res) => {
 }
 
 exports.showAllCommits = (req, res) => {
-    const repositoryId = req.params.repositoryId;
-    const commitHash = req.params.commitHash;
+    console.log('[showAllCommits]');
+    console.log(req.params);
+    const {repositoryId, commitHash} = req.params;
 
     let result = '';
 
@@ -38,8 +39,7 @@ exports.showAllCommits = (req, res) => {
 }
 
 exports.showDiff = (req, res) => {
-    const repositoryId = req.params.repositoryId;
-    const commitHash = req.params.commitHash;
+    const {repositoryId, commitHash} = req.params;
     
     let result = '';
 
@@ -62,12 +62,9 @@ exports.showDiff = (req, res) => {
 
 exports.showTree = (req, res) => {
     const { repositoryId, path: pathParam, commitHash } = req.params;
-    console.log(`repositoryId : ${repositoryId}`);
+
     let commit = `${commitHash || 'master'}`;
     let param = `${pathParam || '.'}`;
-    console.log(`commit : ${commit}`);
-    console.log(`param : ${param}`);
-    console.log('--------------------');
 
     let result = '';
 
@@ -87,4 +84,42 @@ exports.showTree = (req, res) => {
         let arrayOfFiles = parseRepositoryContent(result);
         res.send( arrayOfFiles );
     });
+}
+
+exports.showBlob = (req, res) => {
+    console.log('[showBlob]');
+    const {repositoryId, commitHash, pathToFile} = req.params;
+    console.log(`repositoryId : ${repositoryId}`);
+    console.log(`commitHash : ${commitHash}`);
+    console.log(`pathToFile : ${pathToFile}`);
+
+    console.log(`modded pathToFile : ${pathToFile.replace(/ /g, '\\ ')}`);
+
+    let result = '';
+
+    let workerProcess = spawn('git', ['show', `${commitHash}:./${pathToFile.replace(/ /g, '\\ ')}`], {cwd: `${global.pathToRep}/${repositoryId}`});
+
+    workerProcess.stdout.on('data', data => {
+        result += data.toString();
+    });
+
+    workerProcess.stderr.on('data', err => {
+        console.log('stderr: ' + err);
+        res.json({ err });
+    });
+
+    workerProcess.on('close', code => {
+        console.log(`Exit with code ${code}`);
+        res.send( result );
+    });
+
+    // exec(`git show ${commitHash}:"./${pathToFile}"`, {cwd: `${global.pathToRep}/${repositoryId}`}, (err, out) => {
+    //     if (err) {
+    //         console.log(err);
+    //         res.json({ err });
+    //     }
+    //     else {
+    //         res.send( out );
+    //     }
+    // })
 }
