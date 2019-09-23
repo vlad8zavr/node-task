@@ -36,3 +36,26 @@ exports.showAllCommits = (req, res) => {
         res.send( arrayOfCommits );
     });
 }
+
+exports.showDiff = (req, res) => {
+    const repositoryId = req.params.repositoryId;
+    const commitHash = req.params.commitHash;
+    
+    let result = '';
+
+    let workerProcess = spawn('git', ['diff', `${commitHash}^1..${commitHash}`], {cwd: `${global.pathToRep}/${repositoryId}`});
+
+    workerProcess.stdout.on('data', data => {
+        result += data.toString();
+    });
+
+    workerProcess.stderr.on('data', err => {
+        console.log('stderr: ' + err);
+        res.json({ err });
+    });
+
+    workerProcess.on('close', code => {
+        console.log(`Exit with code ${code}`);
+        res.send( result );
+    });
+}

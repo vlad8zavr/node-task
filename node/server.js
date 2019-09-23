@@ -3,7 +3,7 @@ const express = require('express');
 const fs = require('fs-extra');
 const { exec, spawn } = require('child_process');
 const { parseCommitList, parseRepositoryContent, getPathFromUrl, getPathDeleteMethod } = require('./parseResponse');
-const { showAllRepos, showAllCommits } = require('./controllers/controllers');
+const { showAllRepos, showAllCommits, showDiff } = require('./controllers/controllers');
 
 
 // get argument from command line
@@ -31,6 +31,8 @@ app.get('/', (req, res) => res.json({
 app.get('/api/repos', showAllRepos);
 
 app.get('/api/repos/:repositoryId/commits/:commitHash', showAllCommits);
+
+app.get('/api/repos/:repositoryId/commits/:commitHash/diff', showDiff);
 
 
 /**********OLD  
