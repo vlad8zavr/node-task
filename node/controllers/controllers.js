@@ -59,3 +59,32 @@ exports.showDiff = (req, res) => {
         res.send( result );
     });
 }
+
+exports.showTree = (req, res) => {
+    const { repositoryId, path: pathParam, commitHash } = req.params;
+    console.log(`repositoryId : ${repositoryId}`);
+    let commit = `${commitHash || 'master'}`;
+    let param = `${pathParam || '.'}`;
+    console.log(`commit : ${commit}`);
+    console.log(`param : ${param}`);
+    console.log('--------------------');
+
+    let result = '';
+
+    let workerProcess = spawn('git', ['ls-tree', '-r', '--name-only', `${commit}`, `${param}`], {cwd: `${global.pathToRep}/${repositoryId}`});
+
+    workerProcess.stdout.on('data', data => {
+        result += data.toString();
+    });
+
+    workerProcess.stderr.on('data', err => {
+        console.log('stderr: ' + err);
+        res.json({ err });
+    });
+
+    workerProcess.on('close', code => {
+        console.log(`Exit with code ${code}`);
+        let arrayOfFiles = parseRepositoryContent(result);
+        res.send( arrayOfFiles );
+    });
+}
