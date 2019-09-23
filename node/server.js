@@ -34,9 +34,9 @@ app.get('/api/repos/:repositoryId/commits/:commitHash', showAllCommits);
 
 app.get('/api/repos/:repositoryId/commits/:commitHash/diff', showDiff);
 
-/*
-app.get('/repos/:repositoryId', getTree);
-*/
+
+app.get('/api/repos/:repositoryId', showTree);
+
 app.get(`/api/repos/:repositoryId/tree/:commitHash?/:path([^/]*)?`, showTree);
 
 
